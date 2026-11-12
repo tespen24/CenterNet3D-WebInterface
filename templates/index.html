@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% block title %}Ambil Video{% endblock %}
+{% block heading %}Ambil Video{% endblock %}
+{% block subheading %}Atur durasi dan lokasi penyimpanan, lalu mulai merekam dari Raspberry Pi.{% endblock %}
+
+{% block content %}
+<div class="grid-2">
+  <!-- Panel 1: Informasi Raspberry Pi -->
+  <section class="card" aria-labelledby="piTitle">
+    <div class="card-head">
+      <h2 class="card-title" id="piTitle"><span class="ico"><i data-lucide="server"></i></span>Informasi Raspberry Pi</h2>
+      <button class="btn btn-outline btn-sm" id="btnRefreshPi" type="button"><i data-lucide="refresh-cw"></i>Perbarui</button>
+    </div>
+    <ul class="info-list">
+      <li><span class="k"><i data-lucide="cpu"></i>Nama perangkat</span><span class="v" id="piName">-</span></li>
+      <li><span class="k"><i data-lucide="wifi"></i>Status koneksi</span><span class="v"><span class="badge" id="piStatus"><span class="dot"></span>-</span></span></li>
+      <li><span class="k"><i data-lucide="camera"></i>Kamera</span><span class="v" id="piCamera">-</span></li>
+      <li><span class="k"><i data-lucide="monitor"></i>Resolusi</span><span class="v" id="piResolution">-</span></li>
+      <li><span class="k"><i data-lucide="gauge"></i>FPS</span><span class="v" id="piFps">-</span></li>
+    </ul>
+  </section>
+
+  <!-- Panel 2: Konfigurasi Pengambilan Video -->
+  <section class="card" aria-labelledby="cfgTitle">
+    <div class="card-head">
+      <h2 class="card-title" id="cfgTitle"><span class="ico"><i data-lucide="settings-2"></i></span>Konfigurasi Pengambilan Video</h2>
+    </div>
+
+    <div class="field">
+      <label for="duration">Durasi video</label>
+      <div class="input-group">
+        <input class="input" id="duration" type="number" min="1" step="1" value="5" inputmode="numeric">
+        <span class="addon">menit</span>
+      </div>
+      <div class="error" id="durationError" role="alert"></div>
+    </div>
+
+    <div class="field">
+      <label for="storagePath">Lokasi penyimpanan (di server)</label>
+      <div class="input-group">
+        <input class="input" id="storagePath" type="text" value="/data/videos/" placeholder="/data/videos/" spellcheck="false">
+        <button class="btn btn-outline" id="btnBrowse" type="button"><i data-lucide="folder-open"></i>Browse</button>
+      </div>
+      <div class="error" id="pathError" role="alert"></div>
+    </div>
+
+    <div class="status-panel">
+      <div>
+        <div class="label">Status pengambilan video</div>
+        <span class="badge" id="captureStatus"><span class="dot"></span>Idle</span>
+      </div>
+      <div style="text-align:right">
+        <div class="label">Waktu berjalan</div>
+        <div class="timer" id="captureTimer">00:00 / 05:00</div>
+      </div>
+    </div>
+    <div class="progress" id="captureProgress" style="margin:-6px 0 18px"><span></span></div>
+
+    <div class="btn-row">
+      <button class="btn btn-primary" id="btnStart" type="button"><i data-lucide="play"></i>Mulai Pengambilan Video</button>
+      <button class="btn btn-danger" id="btnStop" type="button" disabled><i data-lucide="square"></i>Hentikan</button>
+    </div>
+  </section>
+</div>
+
+<!-- Area notifikasi -->
+<section class="card" style="margin-top:20px" aria-labelledby="logTitle">
+  <div class="card-head">
+    <h2 class="card-title" id="logTitle"><span class="ico"><i data-lucide="bell"></i></span>Informasi &amp; Notifikasi</h2>
+  </div>
+  <ul class="log" id="activityLog" aria-live="polite">
+    <li class="log-empty"><span>Belum ada aktivitas. Atur konfigurasi lalu tekan Mulai Pengambilan Video.</span></li>
+  </ul>
+</section>
+
+<!-- Modal browse direktori (placeholder) -->
+<div class="modal" id="browseModal" role="dialog" aria-modal="true" aria-labelledby="browseTitle">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h2 id="browseTitle">Pilih direktori di server</h2>
+      <button class="btn btn-outline btn-sm btn-icon" type="button" data-close-modal="browseModal" aria-label="Tutup"><i data-lucide="x"></i></button>
+    </div>
+    <p class="hint" style="color:var(--muted);font-size:13px;margin-bottom:12px">Daftar di bawah masih data dummy. Daftar direktori sebenarnya akan datang dari backend.</p>
+    <ul class="dir-list" id="dirList"></ul>
+    <div class="modal-foot">
+      <button class="btn btn-outline" type="button" data-close-modal="browseModal">Batal</button>
+      <button class="btn btn-primary" type="button" id="btnPickDir">Pilih direktori</button>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/capture.js') }}"></script>
+{% endblock %}

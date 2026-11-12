@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Recent{% endblock %}
+{% block heading %}Recent{% endblock %}
+{% block subheading %}Riwayat video yang sudah diambil dari Raspberry Pi.{% endblock %}
+
+{% block content %}
+<section class="card" aria-labelledby="tblTitle">
+  <div class="card-head">
+    <h2 class="card-title" id="tblTitle"><span class="ico"><i data-lucide="film"></i></span>Daftar Video <span class="badge" id="recCount" style="margin-left:6px">0</span></h2>
+  </div>
+  <div class="toolbar">
+    <div class="search">
+      <i data-lucide="search"></i>
+      <input class="input" id="recSearch" type="search" placeholder="Cari nama file atau lokasi" aria-label="Cari video">
+    </div>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Nama file</th><th>Tanggal pengambilan</th><th>Durasi</th><th>Resolusi</th><th>Ukuran</th><th>Lokasi penyimpanan</th><th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody id="recBody"></tbody>
+    </table>
+  </div>
+  <div id="recEmpty" class="empty-note" style="margin-top:14px" hidden>Tidak ada video yang cocok.</div>
+</section>
+
+<!-- Modal preview -->
+<div class="modal" id="previewModal" role="dialog" aria-modal="true" aria-labelledby="pvTitle">
+  <div class="modal-box" style="max-width:680px">
+    <div class="modal-head">
+      <h2 id="pvTitle">Preview video</h2>
+      <button class="btn btn-outline btn-sm btn-icon" type="button" data-close-modal="previewModal" aria-label="Tutup"><i data-lucide="x"></i></button>
+    </div>
+    <div class="preview"><div class="inner"><i data-lucide="play-circle"></i><strong id="pvName"></strong><span>Placeholder. Pemutar video akan tampil di sini.</span></div></div>
+  </div>
+</div>
+
+<!-- Modal konfirmasi hapus -->
+<div class="modal" id="deleteModal" role="dialog" aria-modal="true" aria-labelledby="delTitle">
+  <div class="modal-box">
+    <div class="modal-head"><h2 id="delTitle">Hapus video?</h2></div>
+    <p>File <strong id="delName"></strong> akan dihapus dari daftar. Tindakan ini tidak dapat dibatalkan.</p>
+    <div class="modal-foot">
+      <button class="btn btn-outline" type="button" data-close-modal="deleteModal">Batal</button>
+      <button class="btn btn-danger" type="button" id="btnConfirmDelete"><i data-lucide="trash-2"></i>Hapus</button>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/recent.js') }}"></script>
+{% endblock %}

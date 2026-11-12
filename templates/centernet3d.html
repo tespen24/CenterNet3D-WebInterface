@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block title %}Jalankan CenterNet3D{% endblock %}
+{% block heading %}Jalankan CenterNet3D{% endblock %}
+{% block subheading %}Pilih video dari server, atur confidence threshold, lalu jalankan deteksi dan penghitungan kendaraan.{% endblock %}
+
+{% block content %}
+<div class="grid-2 wide-left">
+  <div class="stack">
+    <!-- Preview -->
+    <section class="card" aria-labelledby="prevTitle">
+      <div class="card-head">
+        <h2 class="card-title" id="prevTitle"><span class="ico"><i data-lucide="scan-eye"></i></span>Preview Hasil Deteksi</h2>
+        <span class="badge" id="cnStatus"><span class="dot"></span>Idle</span>
+      </div>
+      <div class="preview" id="cnPreview">
+        <span class="corner" id="cnCorner">Frame 0 / 0</span>
+        <div class="inner"><i data-lucide="box"></i><strong>Preview deteksi 3D</strong><span>Placeholder. Video dengan 3D bounding box akan tampil di sini.</span></div>
+      </div>
+      <div class="progress" id="cnProgress" style="margin-top:16px"><span></span></div>
+      <div class="progress-meta"><span id="cnMsg">Menunggu proses dijalankan</span><span id="cnPct">0%</span></div>
+    </section>
+
+    <!-- Hasil -->
+    <section class="card" aria-labelledby="resTitle">
+      <div class="card-head">
+        <h2 class="card-title" id="resTitle"><span class="ico"><i data-lucide="bar-chart-3"></i></span>Hasil Deteksi</h2>
+      </div>
+      <div class="stat-grid">
+        <div class="stat total"><span class="name"><i data-lucide="sigma"></i>Jumlah kendaraan</span><span class="num" id="cntTotal">0</span></div>
+        <div class="stat"><span class="name"><i data-lucide="bus"></i>Bus</span><span class="num" id="cntBus">0</span></div>
+        <div class="stat"><span class="name"><i data-lucide="truck"></i>Truck</span><span class="num" id="cntTruck">0</span></div>
+        <div class="stat"><span class="name"><i data-lucide="car"></i>Sedan</span><span class="num" id="cntSedan">0</span></div>
+        <div class="stat"><span class="name"><i data-lucide="car-front"></i>Pickup</span><span class="num" id="cntPickup">0</span></div>
+      </div>
+    </section>
+  </div>
+
+  <div class="stack">
+    <section class="card" aria-labelledby="cfgTitle">
+      <div class="card-head">
+        <h2 class="card-title" id="cfgTitle"><span class="ico"><i data-lucide="settings-2"></i></span>Konfigurasi</h2>
+      </div>
+
+      <div class="field">
+        <label for="videoSelect">Video dari server</label>
+        <select class="select" id="videoSelect"></select>
+        <div class="error" id="videoError" role="alert"></div>
+      </div>
+
+      <ul class="info-list" id="videoInfo" style="margin-bottom:18px">
+        <li><span class="k"><i data-lucide="info"></i>Belum ada video dipilih</span></li>
+      </ul>
+
+      <div class="field">
+        <label for="confRange">Confidence threshold</label>
+        <div class="range-row">
+          <input type="range" id="confRange" min="0.05" max="0.95" step="0.05" value="0.50" aria-label="Confidence threshold">
+          <input class="input" id="confNumber" type="number" min="0.05" max="0.95" step="0.05" value="0.50" aria-label="Nilai confidence threshold">
+        </div>
+        <div class="hint">Deteksi dengan skor di bawah nilai ini diabaikan.</div>
+        <div class="error" id="confError" role="alert"></div>
+      </div>
+
+      <label class="check" style="margin-bottom:18px"><input type="checkbox" id="simFail"> Simulasikan kegagalan (untuk uji tampilan)</label>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" id="btnRun" type="button"><i data-lucide="play"></i>Jalankan CenterNet3D</button>
+        <button class="btn btn-danger" id="btnStop" type="button" disabled><i data-lucide="square"></i>Hentikan Proses</button>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="logTitle">
+      <div class="card-head">
+        <h2 class="card-title" id="logTitle"><span class="ico"><i data-lucide="bell"></i></span>Informasi &amp; Notifikasi</h2>
+      </div>
+      <ul class="log" id="activityLog" aria-live="polite">
+        <li class="log-empty"><span>Belum ada aktivitas.</span></li>
+      </ul>
+    </section>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/centernet3d.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{% endblock %} | Car Detection &amp; Counting</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <header class="navbar">
+    <div class="navbar-inner">
+      <a class="brand" href="{{ url_for('index') }}">
+        <span class="brand-mark"><i data-lucide="car"></i></span>
+        <h2>CenterNet<span>3D</span></h2>
+      </a>
+      <button class="nav-toggle" id="navToggle" type="button" aria-label="Buka menu" aria-expanded="false" aria-controls="navLinks">
+        <i data-lucide="menu"></i>
+      </button>
+      <nav class="nav-links" id="navLinks" aria-label="Navigasi utama">
+        {% for item in nav_items %}
+        <a href="{{ url_for(item.endpoint) }}"
+           class="nav-link{% if request.endpoint == item.endpoint %} active{% endif %}"
+           {% if request.endpoint == item.endpoint %}aria-current="page"{% endif %}>
+          <i data-lucide="{{ item.icon }}"></i><span>{{ item.label }}</span>
+        </a>
+        {% endfor %}
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="page-head">
+      <h1>{% block heading %}{% endblock %}</h1>
+      <p>{% block subheading %}{% endblock %}</p>
+    </div>
+    {% block content %}{% endblock %}
+  </main>
+
+  <div class="toast-stack" id="toastStack" aria-live="polite"></div>
+
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

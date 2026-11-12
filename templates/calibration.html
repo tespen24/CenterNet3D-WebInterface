@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block title %}Kalibrasi Kamera{% endblock %}
+{% block heading %}Kalibrasi Kamera{% endblock %}
+{% block subheading %}Kumpulkan gambar papan kalibrasi, lalu proses untuk mendapatkan parameter kamera.{% endblock %}
+
+{% block content %}
+<div class="grid-2 wide-left">
+  <div class="stack">
+    <!-- Preview -->
+    <section class="card" aria-labelledby="prevTitle">
+      <div class="card-head">
+        <h2 class="card-title" id="prevTitle"><span class="ico"><i data-lucide="image"></i></span>Preview Kamera</h2>
+        <span class="badge" id="calStatus"><span class="dot"></span>Idle</span>
+      </div>
+      <div class="preview checker" id="calPreview">
+        <span class="corner" id="calCorner">Belum ada gambar</span>
+        <div class="inner"><i data-lucide="camera"></i><strong>Preview kamera</strong><span>Placeholder. Stream kamera akan tampil di sini.</span></div>
+      </div>
+      <div class="progress" id="calProgress" style="margin-top:16px"><span></span></div>
+      <div class="progress-meta"><span id="calCount">0 dari 20 gambar</span><span id="calPct">0%</span></div>
+    </section>
+
+    <!-- Kontrol -->
+    <section class="card" aria-labelledby="ctlTitle">
+      <div class="card-head">
+        <h2 class="card-title" id="ctlTitle"><span class="ico"><i data-lucide="sliders-horizontal"></i></span>Kontrol Kalibrasi</h2>
+      </div>
+      <div class="field">
+        <label for="calTotal">Jumlah gambar kalibrasi</label>
+        <input class="input" id="calTotal" type="number" min="5" max="100" step="1" value="20" inputmode="numeric">
+        <div class="hint">Disarankan 15 sampai 30 gambar dengan sudut papan berbeda.</div>
+        <div class="error" id="calTotalError" role="alert"></div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" id="btnCalStart" type="button"><i data-lucide="play"></i>Mulai Kalibrasi</button>
+        <button class="btn btn-outline" id="btnCalCapture" type="button" disabled><i data-lucide="aperture"></i>Ambil Gambar</button>
+        <button class="btn btn-primary" id="btnCalProcess" type="button" disabled><i data-lucide="calculator"></i>Proses Kalibrasi</button>
+      </div>
+    </section>
+  </div>
+
+  <div class="stack">
+    <!-- Info kamera -->
+    <section class="card" aria-labelledby="camTitle">
+      <div class="card-head">
+        <h2 class="card-title" id="camTitle"><span class="ico"><i data-lucide="camera"></i></span>Informasi Kamera</h2>
+      </div>
+      <ul class="info-list" id="camInfo"></ul>
+    </section>
+
+    <!-- Hasil -->
+    <section class="card" aria-labelledby="resTitle">
+      <div class="card-head">
+        <h2 class="card-title" id="resTitle"><span class="ico"><i data-lucide="ruler"></i></span>Hasil Kalibrasi</h2>
+      </div>
+      <div id="calEmpty" class="empty-note">Belum ada hasil. Ambil gambar sesuai jumlah yang ditentukan, lalu tekan Proses Kalibrasi.</div>
+      <div id="calResult" hidden>
+        <div class="param-title"><i data-lucide="grid-3x3"></i>Camera Matrix</div>
+        <div class="matrix" id="calMatrix"></div>
+        <div class="param-title"><i data-lucide="waves"></i>Distortion Coefficients</div>
+        <div class="coeffs" id="calDist"></div>
+        <div class="param-title"><i data-lucide="target"></i>Reprojection Error</div>
+        <div><strong id="calError" style="font-size:22px"></strong> <span class="badge success" id="calErrorBadge"></span></div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<section class="card" style="margin-top:20px" aria-labelledby="logTitle">
+  <div class="card-head">
+    <h2 class="card-title" id="logTitle"><span class="ico"><i data-lucide="bell"></i></span>Informasi &amp; Notifikasi</h2>
+  </div>
+  <ul class="log" id="activityLog" aria-live="polite">
+    <li class="log-empty"><span>Belum ada aktivitas.</span></li>
+  </ul>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/calibration.js') }}"></script>
+{% endblock %}
