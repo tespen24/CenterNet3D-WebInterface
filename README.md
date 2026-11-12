@@ -3,7 +3,7 @@
 Clone this repository:
 
 ```bash
-https://github.com/tespen24/CenterNet3D-WebInterface.git
+git clone -b python-version --single-branch --depth 1 https://github.com/tespen24/CenterNet3D-WebInterface.git
 cd CenterNet3D-WebInterface
 ```
 
