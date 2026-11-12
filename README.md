@@ -3,7 +3,7 @@
 Clone this repository:
 
 ```bash
-git clone https://github.com/USERNAME/REPOSITORY.git
+https://github.com/tespen24/CenterNet3D-WebInterface.git
 cd REPOSITORY
 ```
 
