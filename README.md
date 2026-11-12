@@ -4,7 +4,7 @@ Clone this repository:
 
 ```bash
 https://github.com/tespen24/CenterNet3D-WebInterface.git
-cd REPOSITORY
+cd CenterNet3D-WebInterface
 ```
 
 Create a virtual environment:
@@ -38,5 +38,5 @@ pip install -r requirements.txt
 Run the application using:
 
 ```bash
-python run.py
+python app.py
 ```
